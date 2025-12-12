@@ -1,0 +1,252 @@
+README 1 – Data Preprocessing
+📌 Overview
+
+This module handles data loading, cleaning, transformation, and preparation of the Iris dataset for machine learning tasks including clustering, classification, and association rule mining. The preprocessing steps ensure that the dataset is standardized, consistent, and model-ready.
+
+📂 Dataset Description
+
+The Iris dataset contains 150 flower samples across 3 species:
+
+Iris setosa
+
+Iris versicolor
+
+Iris virginica
+
+Features:
+
+Sepal Length
+
+Sepal Width
+
+Petal Length
+
+Petal Width
+
+Species (class label)
+
+🔧 Preprocessing Steps
+1. Load Dataset
+
+The dataset is loaded via:
+
+from sklearn.datasets import load_iris
+
+
+Converted to a pandas DataFrame for analysis.
+
+2. Missing Value Checks
+
+Even though no missing values exist in the Iris dataset, validation is done:
+
+df.isnull().sum()
+
+
+This guarantees integrity before training.
+
+3. Feature Scaling (Min-Max Normalization)
+
+Scaled to range 0–1 using:
+
+MinMaxScaler()
+
+
+This ensures equal feature influence for models like K-Means, KNN, and PCA.
+
+4. Label Encoding
+
+Species labels are kept as integers (0, 1, 2).
+Optionally converted to one-hot encoding for algorithms requiring binary vectors.
+
+5. Train–Test Split
+
+A reusable function splits the data into 80% training and 20% testing for classification tasks.
+
+📤 Outputs
+
+X_scaled: normalized features
+
+y: encoded species labels
+
+X_train, X_test: prepared splits
+
+df: cleaned DataFrame
+
+🎯 Purpose
+
+The preprocessing pipeline guarantees:
+
+Clean and usable data
+
+Standardized feature scales
+
+Compatibility with clustering, classification, and rule mining models
+
+A reproducible workflow
+
+README 2 – K-Means Clustering
+📌 Overview
+
+This module applies K-Means clustering on the preprocessed Iris dataset to discover natural groupings of flowers without using labels. The clustering is evaluated and visualized to understand cluster quality and separability.
+
+🔧 Methods Used
+1. K-Means Clustering (k = 3)
+
+Since the Iris dataset has three species, the algorithm is run with:
+
+KMeans(n_clusters=3)
+
+
+Cluster labels are compared to ground truth using:
+
+Adjusted Rand Index (ARI)
+
+2. Experimentation (k = 2 and k = 4)
+
+Additional runs with k = 2 and k = 4 evaluate over- and under-clustering.
+
+3. Elbow Method
+
+An inertia plot from k = 1 to k = 10 identifies the optimal cluster number.
+
+4. Visualizations
+
+Scatter plot: Petal Length vs Petal Width
+
+PCA 2D visualization of clusters
+
+Centroid patterns (via K-Means results)
+
+📈 Evaluation
+Adjusted Rand Index (ARI)
+
+Measures similarity between predicted clusters and true species labels.
+Typical ARI ≈ 0.6–0.75, indicating strong clustering despite class overlap.
+
+Elbow Curve
+
+Shows a clear bend at k = 3, confirming three natural clusters.
+
+🎨 Visualizations Produced
+
+Elbow Curve
+
+Petal Length vs Petal Width cluster scatter plot
+
+PCA 2D Projection of clusters
+
+📌 Interpretation Summary
+
+Setosa clusters cleanly due to strong feature separation.
+
+Versicolor and Virginica overlap more, creating some misclusterings.
+
+K-Means performs well on normalized features.
+
+PCA visuals confirm one distinct and two semi-overlapping clusters.
+
+
+README 3 – Classification & Association Rule Mining
+📌 Part A – Classification
+Overview
+
+This module trains and evaluates supervised machine learning models to classify Iris species.
+
+🔧 Models Used
+1. Decision Tree Classifier
+
+Trained on X_train and evaluated on X_test.
+Metrics computed:
+
+Accuracy
+
+Precision
+
+Recall
+
+F1-Score
+
+Classification Report
+
+The tree is visualized using:
+
+plot_tree()
+
+2. KNN Classifier (k = 5)
+
+Used to compare performance with the Decision Tree.
+
+Comparison is based on:
+
+Accuracy
+
+Precision
+
+Recall
+
+F1-Score
+
+📌 Summary of Findings
+
+KNN (k=5) often performs slightly better due to smooth, distance-based classification.
+
+Decision Tree provides higher interpretability but may overfit.
+
+Both models achieve 93–100% accuracy on Iris dataset.
+
+📌 Part B – Association Rule Mining
+Overview
+
+Synthetic transactional data is generated to simulate a small retail environment. Association rule mining is applied using the Apriori algorithm.
+
+🛒 Synthetic Data Generation
+
+20–50 transactions
+
+3–8 items per basket
+
+Items drawn from a pool of 20 grocery items
+
+Patterns intentionally added (e.g., {milk, bread}, {beer, diapers} co-occurrences)
+
+Generated using:
+
+random.sample()
+random.choices()
+
+🔧 Apriori Algorithm
+
+Using mlxtend, frequent itemsets are mined with:
+
+min_support = 0.2
+
+Association rules generated using:
+
+min_confidence = 0.5
+
+Rules are sorted by lift, and the top 5 strongest rules are displayed.
+
+📈 Interpretation Example:
+
+A rule such as:
+
+{beer} → {diapers}
+
+
+implies:
+
+Strong customer buying pattern
+
+Useful for product placement, cross-selling, and promotions
+
+High lift indicates the combination occurs more often than random chance
+
+📤 Outputs
+
+Frequent itemsets
+
+Association rules (support, confidence, lift)
+
+Top 5 strongest rules
+
+Business interpretation
