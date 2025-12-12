@@ -1,6 +1,7 @@
 # DSA2040A_Final-Exam_-Daisy_812
  Data Warehousing and Mining
  Section 1; Data Warehousing and Management
+ 
 Retail Data Warehouse Project — ETL, Star Schema Design & OLAP Analysis
 
 1. Introduction
@@ -175,6 +176,7 @@ Visualizations support decision-making and reporting.
 
 Section 2: Data mining
 README 1 – Data Preprocessing
+
 📌 Overview
 
 This module handles data loading, cleaning, transformation, and preparation of the Iris dataset for machine learning tasks including clustering, classification, and association rule mining. The preprocessing steps ensure that the dataset is standardized, consistent, and model-ready.
