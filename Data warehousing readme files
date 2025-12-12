@@ -1,0 +1,171 @@
+Retail Data Warehouse Project — ETL, Star Schema Design & OLAP Analysis
+Academic Documentation (README)
+1. Introduction
+
+This project implements a complete Data Warehousing workflow for a retail sales dataset, including:
+
+Star Schema Data Warehouse Design
+
+ETL Pipeline (Extract–Transform–Load) implemented in Python
+
+OLAP Analytical Queries executed in SQLite and Python
+
+Visualizations generated in Jupyter Notebook
+
+The objective is to demonstrate the entire lifecycle of a data warehousing solution, from raw operational data to analytical insights.
+
+2. Data Warehouse Design
+
+A Star Schema architecture was selected due to its simplicity, query performance, and suitability for OLAP workloads.
+
+2.1. Schema Overview
+
+The warehouse consists of:
+
+One Fact Table
+
+fact_sales
+
+Four Dimension Tables
+
+dim_customer
+
+dim_product
+
+dim_category
+
+dim_time
+
+2.2. Star Schema Diagram (Textual)
+                  dim_customer
+                      |
+                      |
+dim_product ---- fact_sales ---- dim_time
+      |                |
+dim_category ----------+
+
+2.3. Table Descriptions
+2.3.1. Dimension Tables
+Dimension	Description	Key
+dim_customer	Customer demographics, location	customer_id
+dim_product	Product-level attributes	product_id
+dim_category	Product category grouping	category_id
+dim_time	Calendar breakdown to support time-series analysis	date_id
+2.3.2. Fact Table
+Fact Table	Description
+fact_sales	Transaction-level sales facts including price, quantity and totals
+3. ETL Process Implementation
+
+The ETL workflow was designed and executed using Python, Pandas, and SQLite3.
+
+3.1 Extract
+
+Raw sales data retrieved from CSV (amazon_sales.csv).
+
+Loaded into a Pandas DataFrame.
+
+3.2 Transform
+
+Key transformations included:
+
+Handling missing values
+
+Standardizing dates
+
+Generating surrogate keys for dimensions
+
+Calculating total_amount per transaction
+
+Mapping categorical fields to foreign keys
+
+3.3 Load
+
+Created all dimension and fact tables in retail_dw.db:
+
+CREATE TABLE dim_customer (...);
+CREATE TABLE dim_product (...);
+CREATE TABLE dim_category (...);
+CREATE TABLE dim_time (...);
+CREATE TABLE fact_sales (...);
+
+
+Data inserted using parameterized Python SQL statements.
+
+3.4 ETL Automation Script
+
+Executed via:
+
+python etl/etl_process.py
+
+
+The script handles the full ETL cycle end-to-end.
+
+4. OLAP Queries and Analysis
+
+OLAP queries were implemented in SQLite and executed in a Jupyter Notebook using Python.
+
+4.1. Sample OLAP Operations
+4.1.1. Rollup — Sales by Country
+SELECT c.country, SUM(f.total) AS TotalSales
+FROM fact_sales f
+JOIN dim_customer c ON f.customer_id = c.customer_id
+GROUP BY c.country;
+
+4.1.2. Cube — Category and Country
+SELECT cat.category, c.country, SUM(f.total)
+FROM fact_sales f
+JOIN dim_product p ON f.product_id = p.product_id
+JOIN dim_category cat ON p.category_id = cat.category_id
+JOIN dim_customer c ON f.customer_id = c.customer_id
+GROUP BY cat.category, c.country;
+
+4.1.3. Drill Down — Year → Month
+SELECT t.year, t.month, SUM(f.total)
+FROM fact_sales f
+JOIN dim_time t ON f.date_id = t.date_id
+GROUP BY t.year, t.month;
+
+5. Visualization of OLAP Results
+
+Visualizations were generated using Matplotlib.
+
+Example: Sales by Country
+plt.figure(figsize=(8,4))
+plt.bar(df["country"], df["TotalSales"])
+plt.title("Total Sales by Country")
+plt.xlabel("Country")
+plt.ylabel("Sales")
+plt.show()
+
+Example: Category Contribution
+plt.figure(figsize=(8,4))
+plt.bar(df["category"], df["TotalSales"])
+plt.title("Sales by Category")
+plt.xticks(rotation=45)
+plt.show()
+
+
+Each visualization provides interpretable, analytical insights into sales performance.
+
+6. Tools & Technologies
+Technology	Purpose
+Python	ETL, scripting
+Pandas	Data cleaning & transformation
+SQLite	Data Warehouse storage
+Jupyter Notebook	OLAP and visualization
+Matplotlib	Charting & visual analytics
+7. Results Summary
+
+A fully functional star-schema warehouse was created.
+
+ETL pipeline successfully transformed operational sales data.
+
+OLAP queries revealed:
+
+High-performing customer regions
+
+Top-selling product categories
+
+Temporal sales trends (monthly/annual)
+
+Visualizations support decision-making and reporting.
