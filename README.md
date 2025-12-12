@@ -1,7 +1,8 @@
 # DSA2040A_Final-Exam_-Daisy_812
-this project performs cal Exam: Data Warehousing and Mining
+ Data Warehousing and Mining
+ Section 1; Data Warehousing and Management
 Retail Data Warehouse Project — ETL, Star Schema Design & OLAP Analysis
-Academic Documentation (README)
+
 1. Introduction
 
 This project implements a complete Data Warehousing workflow for a retail sales dataset, including:
